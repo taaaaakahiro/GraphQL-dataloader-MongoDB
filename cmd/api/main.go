@@ -1,7 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"github.com/taaaaakahiro/GraphQL-dataloader-MongoDB/pkg/command"
+)
 
 func main() {
-	fmt.Println("RUN")
+	command.Run()
 }
