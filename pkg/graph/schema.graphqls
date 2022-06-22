@@ -16,7 +16,7 @@ type Message {
 
 type Query {
   users: [User!]!
-  messages(userID; ID!): [Message]
+  messages(userID: ID!): [Message]
 }
 
 input NewMessage {
