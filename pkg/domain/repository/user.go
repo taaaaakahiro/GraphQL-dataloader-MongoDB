@@ -9,4 +9,5 @@ import (
 type IUserRepository interface {
 	ListUsers(ctx context.Context) ([]entity.User, error)
 	User(ctx context.Context, userId int) (entity.User, error)
+	CreateUser(ctx context.Context, user *entity.User) error
 }
