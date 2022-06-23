@@ -2,10 +2,14 @@ package persistence
 
 import (
 	"context"
+	"log"
 
 	"github.com/taaaaakahiro/GraphQL-dataloader-MongoDB/pkg/domain/entity"
 	"github.com/taaaaakahiro/GraphQL-dataloader-MongoDB/pkg/domain/repository"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 const (
@@ -25,11 +29,43 @@ func NewUserRepository(db *mongo.Database) *UserRepo {
 }
 
 func (r *UserRepo) ListUsers(ctx context.Context) ([]entity.User, error) {
+	users := make([]entity.User, 0)
+	srt := bson.D{
+		primitive.E{Key: "id", Value: -1},
+	}
+	opt := options.Find().SetSort(srt)
+	cur, err := r.col.Find(ctx, bson.D{}, opt)
+	if err != nil {
+		return nil, err
+	}
 
-	return []entity.User{}, nil
+	for cur.Next(ctx) {
+		var user entity.User
+		err := cur.Decode(&user)
+		if err != nil {
+			return nil, err
+		}
+
+		users = append(users, user)
+	}
+
+	err = cur.Close(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return users, nil
 }
 
 func (r *UserRepo) User(ctx context.Context, useId int) (entity.User, error) {
-
-	return entity.User{}, nil
+	user := entity.User{}
+	flt := bson.D{
+		primitive.E{Key: "id", Value: -1},
+	}
+	opt := options.FindOne()
+	err := r.col.FindOne(ctx, flt, opt).Decode(&user)
+	if err == mongo.ErrNoDocuments {
+		log.Println("Documents not found")
+	}
+	return user, nil
 }

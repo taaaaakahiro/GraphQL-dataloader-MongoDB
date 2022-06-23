@@ -4,12 +4,13 @@ package model
 
 type Message struct {
 	ID      string `json:"id"`
-	User    *User  `json:"user"`
+	// User    *User  `json:"user"`
+	UserID string `json:"user_id"`
 	Message string `json:"message"`
 }
 
 type NewMessage struct {
-	Text   string `json:"text"`
+	Message   string `json:"message"`
 	UserID string `json:"userId"`
 }
 

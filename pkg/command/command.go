@@ -67,6 +67,7 @@ func run(ctx context.Context) int {
 	if cfg.DB.Source == "external" {
 		opts = options.Client().SetAuth(options.Credential{AuthMechanism: "MONGODB-AWS", AuthSource: "$external"})
 	}
+
 	mongoClient, err := mongo.NewClient(options.Client().ApplyURI(cfg.DB.URL), opts)
 	if err != nil {
 		logger.Error("failed to create mongo db client", zap.Error(err), zap.String("uri", cfg.DB.URL))

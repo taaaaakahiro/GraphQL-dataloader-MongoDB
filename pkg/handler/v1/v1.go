@@ -7,8 +7,15 @@ import (
 )
 
 type Handler struct {
+	logger *zap.Logger
+	repo   *persistence.Repositories
+	query  *handler.Server
 }
 
 func NewHandler(logger *zap.Logger, repo *persistence.Repositories, query *handler.Server) *Handler {
-	return &Handler{}
+	return &Handler{
+		logger: logger,
+		repo:   repo,
+		query:  query,
+	}
 }

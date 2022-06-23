@@ -65,6 +65,10 @@ type ComplexityRoot struct {
 	}
 }
 
+type MessageResolver interface {
+	User(ctx context.Context, obj *model.Message) (*model.User, error)
+}
+
 type MutationResolver interface {
 	CreateMessage(ctx context.Context, input model.NewMessage) (*model.Message, error)
 }
@@ -401,7 +405,7 @@ func (ec *executionContext) _Message_user(ctx context.Context, field graphql.Col
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.User, nil
+		return obj.UserID, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2657,7 +2661,7 @@ func (ec *executionContext) unmarshalInputNewMessage(ctx context.Context, obj in
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("text"))
-			it.Text, err = ec.unmarshalNString2string(ctx, v)
+			it.Message, err = ec.unmarshalNString2string(ctx, v)
 			if err != nil {
 				return it, err
 			}
