@@ -24,6 +24,11 @@ input NewMessage {
   userId: ID!
 }
 
+input NewUser {
+  userName: String
+}
+
 type Mutation {
   createMessage(input: NewMessage!): Message!
+  cretaUser(input: NewUser!): User!
 }

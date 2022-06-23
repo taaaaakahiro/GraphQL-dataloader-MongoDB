@@ -2,13 +2,6 @@
 
 package model
 
-type Message struct {
-	ID      string `json:"id"`
-	// User    *User  `json:"user"`
-	UserID string `json:"user_id"`
-	Message string `json:"message"`
-}
-
 type NewMessage struct {
 	Message string `json:"message"`
 	UserID  string `json:"userId"`
