@@ -69,3 +69,27 @@ func (r *UserRepo) User(ctx context.Context, useId int) (entity.User, error) {
 	}
 	return user, nil
 }
+
+func (r *UserRepo) CreateUser(ctx context.Context, user *entity.User) error {
+	maxEntity := entity.User{}
+	srt := bson.D{
+		primitive.E{Key: "id", Value: -1},
+	}
+	opt := options.FindOne().SetSort(srt)
+	err := r.col.FindOne(ctx, bson.D{}, opt).Decode(maxEntity)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			user.Id = 1
+		} else {
+			return err
+		}
+	} else {
+		user.Id = maxEntity.Id + 1
+	}
+	_, err = r.col.InsertOne(ctx, user)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
