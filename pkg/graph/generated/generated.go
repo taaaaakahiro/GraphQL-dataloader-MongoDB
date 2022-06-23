@@ -249,7 +249,7 @@ type Query {
 }
 
 input NewMessage {
-  text: String!
+  message: String!
   userId: ID!
 }
 
@@ -2657,10 +2657,10 @@ func (ec *executionContext) unmarshalInputNewMessage(ctx context.Context, obj in
 
 	for k, v := range asMap {
 		switch k {
-		case "text":
+		case "message":
 			var err error
 
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("text"))
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("message"))
 			it.Message, err = ec.unmarshalNString2string(ctx, v)
 			if err != nil {
 				return it, err

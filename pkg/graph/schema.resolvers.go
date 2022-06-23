@@ -15,7 +15,6 @@ import (
 )
 
 func (r *messageResolver) User(ctx context.Context, obj *model.Message) (*model.User, error) {
-	// MEMO: ユーザを要求があったときだけ取得できる
 	userId, err := strconv.Atoi(obj.UserID)
 	if err != nil {
 		return nil, err
@@ -95,7 +94,6 @@ func (r *queryResolver) Messages(ctx context.Context, userID string) ([]*model.M
 	return messages, nil
 }
 
-// Message returns generated.MessageResolver implementation.
 func (r *Resolver) Message() generated.MessageResolver { return &messageResolver{r} }
 
 // Mutation returns generated.MutationResolver implementation.
@@ -104,6 +102,6 @@ func (r *Resolver) Mutation() generated.MutationResolver { return &mutationResol
 // Query returns generated.QueryResolver implementation.
 func (r *Resolver) Query() generated.QueryResolver { return &queryResolver{r} }
 
-type messageResolver struct{ *Resolver }
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
+type messageResolver struct{ *Resolver }

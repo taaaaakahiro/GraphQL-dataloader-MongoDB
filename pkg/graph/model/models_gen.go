@@ -10,8 +10,6 @@ type Message struct {
 }
 
 type NewMessage struct {
-	Message   string `json:"message"`
-	UserID string `json:"userId"`
+	Message string `json:"message"`
+	UserID  string `json:"userId"`
 }
-
-

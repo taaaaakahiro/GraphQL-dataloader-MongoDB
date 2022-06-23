@@ -20,7 +20,7 @@ type Query {
 }
 
 input NewMessage {
-  text: String!
+  message: String!
   userId: ID!
 }
 
