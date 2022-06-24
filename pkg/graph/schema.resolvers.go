@@ -79,9 +79,6 @@ func (r *mutationResolver) DeleteMessage(ctx context.Context, input model.Delete
 	if err != nil {
 		return nil, err
 	}
-	// entityMessage := &entity.Message{
-	// 	Id: messageId,
-	// }
 	err = r.Repo.Message.DeleteMessage(ctx, messageId)
 	if err != nil {
 		return nil, err
