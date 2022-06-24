@@ -6,3 +6,7 @@ type NewMessage struct {
 	Message string `json:"message"`
 	UserID  string `json:"userId"`
 }
+
+type NewUser struct {
+	UserName string `json:"userName"`
+}

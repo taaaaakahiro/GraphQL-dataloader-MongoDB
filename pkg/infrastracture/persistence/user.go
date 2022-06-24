@@ -57,17 +57,17 @@ func (r *UserRepo) ListUsers(ctx context.Context) ([]entity.User, error) {
 	return users, nil
 }
 
-func (r *UserRepo) User(ctx context.Context, useId int) (entity.User, error) {
+func (r *UserRepo) User(ctx context.Context, userId int) (entity.User, error) {
 	user := entity.User{}
 	flt := bson.D{
-		primitive.E{Key: "id", Value: -1},
+		primitive.E{Key: "id", Value: userId},
 	}
 	opt := options.FindOne()
 	err := r.col.FindOne(ctx, flt, opt).Decode(&user)
 	if err == mongo.ErrNoDocuments {
 		log.Println("Documents not found")
 	}
-	return user, nil
+	return user, err
 }
 
 func (r *UserRepo) CreateUser(ctx context.Context, user *entity.User) error {
@@ -76,7 +76,7 @@ func (r *UserRepo) CreateUser(ctx context.Context, user *entity.User) error {
 		primitive.E{Key: "id", Value: -1},
 	}
 	opt := options.FindOne().SetSort(srt)
-	err := r.col.FindOne(ctx, bson.D{}, opt).Decode(maxEntity)
+	err := r.col.FindOne(ctx, bson.D{}, opt).Decode(&maxEntity)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
 			user.Id = 1

@@ -57,6 +57,21 @@ func (r *mutationResolver) CreateMessage(ctx context.Context, input model.NewMes
 	return result, nil
 }
 
+func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) (*model.User, error) {
+	entityUser := &entity.User{
+		Name: input.UserName,
+	}
+	err := r.Repo.User.CreateUser(ctx, entityUser)
+	if err != nil {
+		return nil, err
+	}
+	result := &model.User{
+		ID:   strconv.Itoa(entityUser.Id),
+		Name: input.UserName,
+	}
+	return result, nil
+}
+
 func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
 	entities, err := r.Repo.User.ListUsers(ctx)
 	if err != nil {

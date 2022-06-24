@@ -25,10 +25,10 @@ input NewMessage {
 }
 
 input NewUser {
-  userName: String
+  userName: String!
 }
 
 type Mutation {
   createMessage(input: NewMessage!): Message!
-  cretaUser(input: NewUser!): User!
+  createUser(input: NewUser!): User!
 }
