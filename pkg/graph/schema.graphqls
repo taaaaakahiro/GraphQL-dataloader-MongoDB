@@ -23,12 +23,20 @@ input NewMessage {
   message: String!
   userId: ID!
 }
-
 input NewUser {
   userName: String!
+}
+input DeleteMessage {
+  id: ID!
+}
+input UpdateMessage {
+  id: ID!
+  message: String!
 }
 
 type Mutation {
   createMessage(input: NewMessage!): Message!
   createUser(input: NewUser!): User!
+  deleteMessage(input: DeleteMessage!): Message!
+  updateMessage(input: UpdateMessage): Message! 
 }

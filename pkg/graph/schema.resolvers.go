@@ -6,6 +6,7 @@ package graph
 import (
 	"context"
 	"errors"
+	"fmt"
 	"log"
 	"strconv"
 
@@ -15,6 +16,7 @@ import (
 )
 
 func (r *messageResolver) User(ctx context.Context, obj *model.Message) (*model.User, error) {
+	// case by no dataloader
 	userId, err := strconv.Atoi(obj.UserID)
 	if err != nil {
 		return nil, err
@@ -28,6 +30,7 @@ func (r *messageResolver) User(ctx context.Context, obj *model.Message) (*model.
 		Name: entityUser.Name,
 	}
 	return user, nil
+	// case by use dataloader
 }
 
 func (r *mutationResolver) CreateMessage(ctx context.Context, input model.NewMessage) (*model.Message, error) {
@@ -70,6 +73,29 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) 
 		Name: input.UserName,
 	}
 	return result, nil
+}
+
+func (r *mutationResolver) DeleteMessage(ctx context.Context, input model.DeleteMessage) (*model.Message, error) {
+	messageId, err := strconv.Atoi(input.ID)
+	if err != nil {
+		return nil, err
+	}
+	// entityMessage := &entity.Message{
+	// 	Id: messageId,
+	// }
+	err = r.Repo.Message.DeleteMessage(ctx, messageId)
+	if err != nil {
+		return nil, err
+	}
+	result := &model.Message{
+		ID: input.ID,
+	}
+
+	return result, nil
+}
+
+func (r *mutationResolver) UpdateMessage(ctx context.Context, input *model.UpdateMessage) (*model.Message, error) {
+	panic(fmt.Errorf("not implemented"))
 }
 
 func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {

@@ -2,6 +2,7 @@ package persistence
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/taaaaakahiro/GraphQL-dataloader-MongoDB/pkg/domain/entity"
 	"github.com/taaaaakahiro/GraphQL-dataloader-MongoDB/pkg/domain/repository"
@@ -79,5 +80,18 @@ func (r MessageRepo) CreateMessage(ctx context.Context, message *entity.Message)
 	if err != nil {
 		return err
 	}
+	return nil
+}
+
+func (r *MessageRepo) UpdateMessage(ctx context.Context, messageId int, message *entity.Message) error {
+	return nil
+}
+
+func (r *MessageRepo) DeleteMessage(ctx context.Context, messageId int) error {
+	_, err := r.col.DeleteOne(ctx, bson.M{"id": messageId})
+	if err != nil {
+		return err
+	}
+	fmt.Println("success delete")
 	return nil
 }

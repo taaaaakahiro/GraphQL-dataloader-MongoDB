@@ -2,8 +2,11 @@ package persistence
 
 import (
 	"context"
+	"fmt"
 	"log"
+	"strconv"
 
+	"github.com/graph-gophers/dataloader"
 	"github.com/taaaaakahiro/GraphQL-dataloader-MongoDB/pkg/domain/entity"
 	"github.com/taaaaakahiro/GraphQL-dataloader-MongoDB/pkg/domain/repository"
 	"go.mongodb.org/mongo-driver/bson"
@@ -91,5 +94,23 @@ func (r *UserRepo) CreateUser(ctx context.Context, user *entity.User) error {
 		return err
 	}
 
+	return nil
+}
+
+// for dataloader 〜途中〜
+func (r *UserRepo) GetUsers(_ context.Context, keys dataloader.Keys) []*dataloader.Result {
+	output := make([]*dataloader.Result, len(keys))
+
+	userIds := make([]interface{}, len(keys))
+	for i, key := range keys {
+		userId, err := strconv.Atoi(key.String())
+		if err != nil {
+			log.Printf("%+v", err)
+			err := fmt.Errorf("user error %s", err.Error())
+			output[0] = &dataloader.Result{Data: nil, Error: err}
+			return output
+		}
+		userIds[i] = userId
+	}
 	return nil
 }

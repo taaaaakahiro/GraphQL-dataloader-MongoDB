@@ -1,0 +1,6 @@
+[
+    {"id": 1, "userId": 1, "todo": "walk"},
+    {"id": 2, "userId": 1, "todo": "run"},
+    {"id": 3, "userId": 2, "todo": "sleep"},
+    {"id": 4, "userId": 2, "todo": "eat"}
+]

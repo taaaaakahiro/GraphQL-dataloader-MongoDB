@@ -2,6 +2,10 @@
 
 package model
 
+type DeleteMessage struct {
+	ID string `json:"id"`
+}
+
 type NewMessage struct {
 	Message string `json:"message"`
 	UserID  string `json:"userId"`
@@ -9,4 +13,9 @@ type NewMessage struct {
 
 type NewUser struct {
 	UserName string `json:"userName"`
+}
+
+type UpdateMessage struct {
+	ID      string `json:"id"`
+	Message string `json:"message"`
 }
