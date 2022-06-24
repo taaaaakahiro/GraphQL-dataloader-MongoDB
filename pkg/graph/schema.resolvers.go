@@ -29,7 +29,6 @@ func (r *messageResolver) User(ctx context.Context, obj *model.Message) (*model.
 		Name: entityUser.Name,
 	}
 	return user, nil
-	// case by use dataloader
 }
 
 func (r *mutationResolver) CreateMessage(ctx context.Context, input model.NewMessage) (*model.Message, error) {

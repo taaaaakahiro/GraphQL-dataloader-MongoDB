@@ -84,7 +84,19 @@ func (r MessageRepo) CreateMessage(ctx context.Context, message *entity.Message)
 }
 
 func (r *MessageRepo) UpdateMessage(ctx context.Context, message *entity.Message) error {
-	_, err := r.col.UpdateOne(
+	maxEntity := entity.Message{}
+	srt := bson.D{
+		primitive.E{Key: "id", Value: -1},
+	}
+	opt := options.FindOne().SetSort(srt)
+	err := r.col.FindOne(ctx, bson.D{{"id", message.Id}}, opt).Decode(&maxEntity)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return err
+		}
+	}
+
+	_, err = r.col.UpdateOne(
 		ctx,
 		bson.M{"id": message.Id},
 		bson.D{
