@@ -83,7 +83,18 @@ func (r MessageRepo) CreateMessage(ctx context.Context, message *entity.Message)
 	return nil
 }
 
-func (r *MessageRepo) UpdateMessage(ctx context.Context, messageId int, message *entity.Message) error {
+func (r *MessageRepo) UpdateMessage(ctx context.Context, message *entity.Message) error {
+	_, err := r.col.UpdateOne(
+		ctx,
+		bson.M{"id": message.Id},
+		bson.D{
+			{"$set", bson.D{{"message", message.Message}}},
+		},
+	)
+	if err != nil {
+		return err
+	}
+	fmt.Println("update success")
 	return nil
 }
 
@@ -92,6 +103,5 @@ func (r *MessageRepo) DeleteMessage(ctx context.Context, messageId int) error {
 	if err != nil {
 		return err
 	}
-	fmt.Println("success delete")
 	return nil
 }

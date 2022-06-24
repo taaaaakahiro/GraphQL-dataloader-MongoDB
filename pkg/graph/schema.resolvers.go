@@ -6,7 +6,6 @@ package graph
 import (
 	"context"
 	"errors"
-	"fmt"
 	"log"
 	"strconv"
 
@@ -95,7 +94,24 @@ func (r *mutationResolver) DeleteMessage(ctx context.Context, input model.Delete
 }
 
 func (r *mutationResolver) UpdateMessage(ctx context.Context, input *model.UpdateMessage) (*model.Message, error) {
-	panic(fmt.Errorf("not implemented"))
+	messageid, err := strconv.Atoi(input.ID)
+	if err != nil {
+		return nil, err
+	}
+	entityMessage := &entity.Message{
+		Id:      messageid,
+		Message: input.Message,
+	}
+	err = r.Repo.Message.UpdateMessage(ctx, entityMessage)
+	if err != nil {
+		return nil, err
+	}
+	result := &model.Message{
+		ID:      input.ID,
+		Message: input.Message,
+	}
+	return result, nil
+
 }
 
 func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
